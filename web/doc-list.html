@@ -1,0 +1,35 @@
+<link rel="import" href="components/polymer/polymer.html">
+
+<link rel="import" href="components/paper-shadow/paper-shadow.html">
+<link rel="import" href="doc-title.html">
+<link rel="import" href="doc-line.html">
+<link rel="import" href="doc-service/doc-service.html">
+
+<polymer-element name="doc-list" attributes="show">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <doc-service id="service" lines="{{lines}}" display="{{display}}">
+        </doc-service>
+
+        <div layout vertical center>
+            <doc-title>{{display}}</doc-title>
+            <template repeat="{{line in lines}}">
+            <doc-line>
+                <left-side>{{line.comment}}</left-side>
+                <right-side>{{line.code}}</right-side>
+            </doc-line>
+            </template>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({});
+    </script>
+
+</polymer-element>

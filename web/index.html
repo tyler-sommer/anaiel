@@ -17,8 +17,8 @@
     <link rel="import" href="components/core-menu/core-submenu.html">
     <link rel="import" href="components/core-item/core-item.html">
     <link rel="import" href="components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="line-item.html">
-    <link rel="import" href="entries-list.html">
+    <link rel="import" href="components/paper-shadow/paper-shadow.html">
+    <link rel="import" href="doc-list.html">
 
     <style>
         html,body {
@@ -34,6 +34,10 @@
         }
         core-toolbar {
             color: white;
+        }
+        .content {
+            width: 80%;
+            margin: 20px auto;
         }
     </style>
 
@@ -66,7 +70,9 @@
     <span tool>Anaiel - Home</span>
 
     <div class="content">
-        <entries-list show="all"></entries-list>
+        <paper-shadow>
+        <doc-list show="all"></doc-list>
+        </paper-shadow>
     </div>
 </core-scaffold>
 </body>
