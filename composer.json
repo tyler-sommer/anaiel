@@ -1,0 +1,7 @@
+{
+  "name": "tyler-sommer/anaiel",
+  "description": "Simple documentation editor and generator",
+  "require": {
+    "nice/framework": "1.0.x-dev"
+  }
+}
