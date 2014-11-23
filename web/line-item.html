@@ -1,0 +1,37 @@
+<link rel="import" href="components/polymer/polymer.html">
+
+<polymer-element name="line-item">
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                background-color: white;
+                width: 80%;
+                margin: 0 auto;
+                font-size: 1rem;
+                line-height: 1.5rem;
+                font-weight: 300;
+            }
+            .left-side {
+                width: 48%;
+                float: left;
+            }
+            .right-side {
+                width: 48%;
+                float: right;
+                background-color: #e0e0e0;
+                font-family: "Courier New", monospace;
+                white-space: pre;
+            }
+        </style>
+
+        <div class="left-side">
+            <content select="left-side"></content>
+        </div>
+        <div class="right-side"><content select="right-side"></content></div>
+    </template>
+    <script>
+        Polymer({});
+    </script>
+</polymer-element>

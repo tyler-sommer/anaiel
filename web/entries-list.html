@@ -1,0 +1,40 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="line-item.html">
+
+<polymer-element name="entries-list" attributes="show">
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                margin-top: 10px;
+            }
+            entry {
+                margin-bottom: 30px;
+            }
+        </style>
+
+        <div layout vertical center>
+
+            <line-item>
+                <left-side></left-side>
+                <right-side>(function(window) {</right-side>
+            </line-item>
+            <line-item>
+                <left-side>And here, you can see, we are doing something.</left-side>
+                <right-side>    // do something</right-side>
+            </line-item>
+            <line-item>
+                <left-side></left-side>
+                <right-side>})(this);</right-side>
+            </line-item>
+
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({});
+    </script>
+
+</polymer-element>
