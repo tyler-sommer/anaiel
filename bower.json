@@ -1,0 +1,10 @@
+{
+  "name": "tyler-sommer/anaiel",
+  "description": "Simple documentation editor and generator",
+  "license": "MIT",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.0",
+    "font-roboto": "Polymer/font-roboto#^0.5.0",
+    "core-ajax": "Polymer/core-ajax#^0.5.0"
+  }
+}

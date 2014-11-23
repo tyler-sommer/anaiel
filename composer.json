@@ -1,7 +1,20 @@
 {
   "name": "tyler-sommer/anaiel",
   "description": "Simple documentation editor and generator",
+  "license": "MIT",
   "require": {
-    "nice/framework": "1.0.x-dev"
+    "nice/framework": "1.0.x-dev",
+    "nice/doctrine-dbal": "1.0.x-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Anaiel\\Tests\\": "tests/",
+      "Anaiel\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
   }
 }
