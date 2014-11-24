@@ -10,18 +10,14 @@
                 width: 100%;
                 margin: 0 auto;
                 font-size: 1.5rem;
-                line-height: 2rem;
+                line-height: 3rem;
                 font-weight: 600;
             }
             .left-side {
-                width: 48%;
-                float: left;
                 padding-top: 20px;
             }
             .right-side {
-                width: 48%;
-                float: right;
-                background-color: #e0e0e0;
+                border-left: 1px solid #e0e0e0;
                 font-family: "Courier New", monospace;
                 white-space: pre;
                 padding-top: 20px;
@@ -30,14 +26,15 @@
                 text-align: center;
             }
         </style>
+        <div horizontal layout>
+            <div class="left-side" flex self-center>
+                <div class="title">
+                    <content></content>
+                </div>
 
-        <div class="left-side">
-            <div class="title">
-                <content></content>
             </div>
-
+            <div class="right-side" flex self-center><br></div>
         </div>
-        <div class="right-side"><br></div>
     </template>
     <script>
         Polymer({});

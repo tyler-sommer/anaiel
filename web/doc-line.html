@@ -1,10 +1,12 @@
 <link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="components/paper-input/paper-input-decorator.html">
+<link rel="import" href="components/core-icons/image-icons.html">
 
-<polymer-element name="doc-line">
+<polymer-element name="doc-line" attributes="comments code">
     <template>
         <style>
             :host {
-                display: block;
                 position: relative;
                 background-color: white;
                 width: 100%;
@@ -12,25 +14,29 @@
                 font-size: 1rem;
                 line-height: 1.5rem;
                 font-weight: 300;
+                display: block;
             }
             .left-side {
-                width: 48%;
-                float: left;
                 padding-left: 10px;
             }
             .right-side {
-                width: 48%;
-                float: right;
-                background-color: #e0e0e0;
+                border-left: 1px solid #e0e0e0;
                 font-family: "Courier New", monospace;
                 white-space: pre;
             }
+            paper-icon-button {
+                position: absolute;
+                font-size: .8rem;
+                padding: 0;
+                right: 0;
+            }
         </style>
-
-        <div class="left-side">
-            <content select="left-side"></content>
+        <div horizontal layout>
+            <div class="left-side" flex self-center>
+                {{comments}}
+            </div>
+            <div class="right-side" flex self-center><div>{{code}}</div></div>
         </div>
-        <div class="right-side"><content select="right-side"></content></div>
     </template>
     <script>
         Polymer({});

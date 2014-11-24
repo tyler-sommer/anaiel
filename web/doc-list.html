@@ -19,9 +19,7 @@
         <div layout vertical center>
             <doc-title>{{display}}</doc-title>
             <template repeat="{{line in lines}}">
-            <doc-line>
-                <left-side>{{line.comment}}</left-side>
-                <right-side>{{line.code}}</right-side>
+            <doc-line comments="{{line.comment}}" code="{{line.code}}">
             </doc-line>
             </template>
         </div>
