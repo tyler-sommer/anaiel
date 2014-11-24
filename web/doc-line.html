@@ -1,6 +1,7 @@
 <link rel="import" href="components/polymer/polymer.html">
 <link rel="import" href="components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="components/paper-input/paper-input-decorator.html">
+<link rel="import" href="components/paper-input/paper-autogrow-textarea.html">
 <link rel="import" href="components/core-icons/image-icons.html">
 
 <polymer-element name="doc-line" attributes="comments code">
@@ -16,8 +17,15 @@
                 font-weight: 300;
                 display: block;
             }
-            .left-side {
+            .left-side, .left-side-edit {
                 padding-left: 10px;
+            }
+            .right-side-edit paper-input-decorator {
+                border-left: 1px solid #e0e0e0;
+                font-family: "Courier New", monospace;
+            }
+            textarea {
+                width: 100%;
             }
             .right-side {
                 border-left: 1px solid #e0e0e0;
@@ -31,14 +39,46 @@
                 right: 0;
             }
         </style>
-        <div horizontal layout>
-            <div class="left-side" flex self-center>
-                {{comments}}
+
+        <paper-icon-button icon="create" on-tap="{{edit}}"></paper-icon-button>
+        <div id="container">
+        <template if="{{!editing}}">
+            <div id="display" horizontal layout>
+                <div class="left-side" flex self-center>
+                    {{comments}}
+                </div>
+                <div class="right-side" flex self-center><div>{{code}}</div></div>
             </div>
-            <div class="right-side" flex self-center><div>{{code}}</div></div>
+        </template>
+        <template if="{{editing}}">
+            <div id="editor" horizontal layout>
+                <div class="left-side-edit" flex self-center>
+                    <paper-input-decorator floatingLabel label="Edit Comments">
+                        <paper-autogrow-textarea id="comments-wrapper">
+                            <textarea id="comments" value="{{comments}}"></textarea>
+                        </paper-autogrow-textarea>
+                    </paper-input-decorator>
+                </div>
+
+                <div class="right-side-edit" flex self-center>
+                    <paper-input-decorator floatingLabel label="Edit Code">
+                        <paper-autogrow-textarea id="code-wrapper">
+                            <textarea id="code" value="{{code}}"></textarea>
+                        </paper-autogrow-textarea>
+                    </paper-input-decorator>
+                </div>
+            </div>
+        </template>
         </div>
     </template>
     <script>
-        Polymer({});
+        Polymer('doc-line', {
+            publish: {
+                editing: false
+            },
+            edit: function() {
+                this.editing = !this.editing;
+            }
+        });
     </script>
 </polymer-element>
