@@ -30,14 +30,22 @@ $app->appendExtension(new DoctrineDbalExtension([
     ]
 ]));
 $app->set('routes', function (RouteCollector $r) {
-    $r->map('/', 'home', function (Request $request) {
-        return new Response('Hello, world');
+    $r->map('/docs/{id}.json', null, function (Application $app, $id) {
+        $conn = $app->get('doctrine.dbal.database_connection');
+
+        $title = $conn->executeQuery('SELECT p.title FROM anaiel.pages p WHERE p.id = :id', array('id' => $id))->fetchColumn(0);
+        $items = $conn->executeQuery('SELECT ps.id, ps.title, ps.order, ps.text as comment, ps.code FROM anaiel.page_sections ps WHERE ps.page_id = :id', array('id' => $id))->fetchAll();
+
+        return new JsonResponse(array(
+            'title' => $title,
+            'lines' => $items
+        ));
     });
 
     $r->map('/menu/items.json', null, function (Application $app, Request $request) {
         $conn = $app->get('doctrine.dbal.database_connection');
 
-        $items = $conn->executeQuery('SELECT ps.id, ps.page_id, ps.title, ps.order, ps.text, ps.code, p.title as page_title FROM anaiel.page_sections ps JOIN anaiel.pages p ON ps.page_id = p.id ORDER BY ps.order')->fetchAll();
+        $items = $conn->executeQuery('SELECT ps.id, ps.page_id, ps.title, ps.order, p.title as page_title FROM anaiel.page_sections ps JOIN anaiel.pages p ON ps.page_id = p.id ORDER BY ps.order')->fetchAll();
 
         $menus = array();
         foreach ($items as $item) {

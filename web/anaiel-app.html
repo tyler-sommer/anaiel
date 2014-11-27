@@ -1,0 +1,58 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="components/core-signals/core-signals.html">
+<link rel="import" href="components/core-header-panel/core-header-panel.html">
+<link rel="import" href="components/core-toolbar/core-toolbar.html">
+<link rel="import" href="components/core-scaffold/core-scaffold.html">
+<link rel="import" href="doc-list.html">
+<link rel="import" href="doc-menu.html">
+
+<polymer-element name="anaiel-app">
+
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .content {
+                width: 80%;
+                margin: 20px auto;
+            }
+            core-header-panel {
+                height: 100%;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            core-toolbar {
+                color: white;
+            }
+        </style>
+        <core-scaffold>
+            <core-header-panel navigation flex mode="seamed">
+                <core-toolbar id="navheader">
+                    <span>Menu</span>
+                </core-toolbar>
+
+                <doc-menu on-menu-selected="{{menuSelected}}"></doc-menu>
+
+            </core-header-panel>
+                <span tool>Anaiel - Home</span>
+
+                <div class="content">
+                    <paper-shadow>
+                        <doc-list id="listing" show="all"></doc-list>
+                    </paper-shadow>
+                </div>
+        </core-scaffold>
+    </template>
+
+    <script>
+        Polymer({
+            menuSelected: function(e, data, el) {
+                this.$.listing.load(data.page_id);
+            }
+        });
+    </script>
+
+</polymer-element>
+
+

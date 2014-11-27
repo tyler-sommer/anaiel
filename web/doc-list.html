@@ -27,7 +27,11 @@
     </template>
 
     <script>
-        Polymer({});
+        Polymer({
+            load: function(id) {
+                this.$.service.load(id);
+            }
+        });
     </script>
 
 </polymer-element>
