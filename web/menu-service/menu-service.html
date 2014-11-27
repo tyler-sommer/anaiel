@@ -1,0 +1,29 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="menu-service" attributes="menus">
+    <template>
+        <style>
+            :host {
+                display: none;
+            }
+        </style>
+        <core-ajax id="ajax"
+                   auto
+                   url="../api/index.php/menu/items.json"
+                   on-core-response="{{menusLoaded}}"
+                   handleAs="json">
+        </core-ajax>
+    </template>
+    <script>
+        Polymer('menu-service', {
+            created: function() {
+                this.menus = [];
+            },
+            menusLoaded: function() {
+                // Make a copy of the loaded data
+                this.menus = this.$.ajax.response.slice(0);
+            }
+        });
+    </script>
+</polymer-element>

@@ -1,0 +1,39 @@
+<link rel="import" href="components/polymer/polymer.html">
+
+<link rel="import" href="components/paper-shadow/paper-shadow.html">
+<link rel="import" href="components/core-menu/core-menu.html">
+<link rel="import" href="components/core-menu/core-submenu.html">
+
+<link rel="import" href="menu-service/menu-service.html">
+
+<polymer-element name="doc-menu" attributes="show">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <menu-service id="menu" menus="{{menus}}">
+        </menu-service>
+
+        <core-menu selected="0">
+            <template repeat="{{menus}}">
+                <core-submenu icon="settings" label="{{title}}">
+                    <template repeat="{{items}}">
+                        <core-item label="{{title}}"></core-item>
+                    </template>
+                </core-submenu>
+            </template>
+
+        </core-menu>
+
+    </template>
+
+    <script>
+        Polymer({});
+    </script>
+
+</polymer-element>
+
+
