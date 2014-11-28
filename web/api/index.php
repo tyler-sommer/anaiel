@@ -34,7 +34,7 @@ $app->set('routes', function (RouteCollector $r) {
         $conn = $app->get('doctrine.dbal.database_connection');
 
         $title = $conn->executeQuery('SELECT p.title FROM anaiel.pages p WHERE p.id = :id', array('id' => $id))->fetchColumn(0);
-        $items = $conn->executeQuery('SELECT ps.id, ps.title, ps.order, ps.text as comment, ps.code FROM anaiel.page_sections ps WHERE ps.page_id = :id', array('id' => $id))->fetchAll();
+        $items = $conn->executeQuery('SELECT ps.id, ps.order, ps.text as comment, ps.code FROM anaiel.page_sections ps WHERE ps.page_id = :id', array('id' => $id))->fetchAll();
 
         return new JsonResponse(array(
             'title' => $title,
@@ -45,18 +45,18 @@ $app->set('routes', function (RouteCollector $r) {
     $r->map('/menu/items.json', null, function (Application $app, Request $request) {
         $conn = $app->get('doctrine.dbal.database_connection');
 
-        $items = $conn->executeQuery('SELECT ps.id, ps.page_id, ps.title, ps.order, p.title as page_title FROM anaiel.page_sections ps JOIN anaiel.pages p ON ps.page_id = p.id ORDER BY ps.order')->fetchAll();
+        $items = $conn->executeQuery('SELECT p.id, b.id as book_id, p.order, p.title, b.title as book_title FROM anaiel.pages p JOIN anaiel.books b ON p.book_id = b.id ORDER BY p.order')->fetchAll();
 
         $menus = array();
         foreach ($items as $item) {
-            if (!isset($menus[$item['page_id']])) {
-                $menus[$item['page_id']] = array(
+            if (!isset($menus[$item['book_id']])) {
+                $menus[$item['book_id']] = array(
                     'items' => array(),
-                    'title' => $item['page_title']
+                    'title' => $item['book_title']
                 );
             }
 
-            $menus[$item['page_id']]['items'][] = $item;
+            $menus[$item['book_id']]['items'][] = $item;
         }
 
         return new JsonResponse(array_values($menus));
