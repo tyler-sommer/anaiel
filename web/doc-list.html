@@ -3,6 +3,7 @@
 <link rel="import" href="components/paper-shadow/paper-shadow.html">
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-line.html">
+<link rel="import" href="doc-footer.html">
 <link rel="import" href="doc-service/doc-service.html">
 
 <polymer-element name="doc-list" attributes="show">
@@ -10,6 +11,7 @@
         <style>
             :host {
                 display: block;
+                background-color: white;
             }
         </style>
 
@@ -22,6 +24,7 @@
             <doc-line comments="{{line.comment}}" code="{{line.code}}">
             </doc-line>
             </template>
+            <doc-footer></doc-footer>
         </div>
 
     </template>
