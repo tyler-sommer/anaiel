@@ -3,6 +3,7 @@
 <link rel="import" href="components/paper-shadow/paper-shadow.html">
 <link rel="import" href="components/core-menu/core-menu.html">
 <link rel="import" href="components/core-menu/core-submenu.html">
+<link rel="import" href="components/paper-button/paper-button.html">
 
 <link rel="import" href="menu-service/menu-service.html">
 
@@ -25,17 +26,14 @@
                     </template>
                 </core-submenu>
             </template>
-
         </core-menu>
-
+        <template if="{{editing}}">
+            <paper-button>Add Page</paper-button>
+        </template>
     </template>
 
     <script>
         Polymer({
-            editing: false,
-            editingChanged: function() {
-                console.log(arguments);
-            },
             selectItem: function(e, clicks, el) {
                 this.fire('menu-selected', e.target.templateInstance.model);
             }

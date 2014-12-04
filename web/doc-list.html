@@ -1,6 +1,7 @@
 <link rel="import" href="components/polymer/polymer.html">
 
 <link rel="import" href="components/paper-shadow/paper-shadow.html">
+<link rel="import" href="components/paper-button/paper-button.html">
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-line.html">
 <link rel="import" href="doc-footer.html">
@@ -24,7 +25,12 @@
             <doc-line comments="{{line.comment}}" editing="{{editing}}" code="{{line.code}}">
             </doc-line>
             </template>
-            <doc-footer></doc-footer>
+            <doc-footer>
+                <template if="{{editing}}">
+                    <paper-button on-tap="{{addSection}}">Add Section</paper-button>
+                </template>
+            </doc-footer>
+
         </div>
 
     </template>
@@ -33,6 +39,9 @@
         Polymer({
             load: function(id) {
                 this.$.service.load(id);
+            },
+            addSection: function() {
+                this.lines.push({});
             }
         });
     </script>
