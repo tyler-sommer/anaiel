@@ -6,7 +6,7 @@
 <link rel="import" href="doc-footer.html">
 <link rel="import" href="doc-service/doc-service.html">
 
-<polymer-element name="doc-list" attributes="show">
+<polymer-element name="doc-list" attributes="show editing">
     <template>
         <style>
             :host {
@@ -21,7 +21,7 @@
         <div layout vertical center>
             <doc-title>{{display}}</doc-title>
             <template repeat="{{line in lines}}">
-            <doc-line comments="{{line.comment}}" code="{{line.code}}">
+            <doc-line comments="{{line.comment}}" editing="{{editing}}" code="{{line.code}}">
             </doc-line>
             </template>
             <doc-footer></doc-footer>

@@ -3,6 +3,7 @@
 <link rel="import" href="components/core-header-panel/core-header-panel.html">
 <link rel="import" href="components/core-toolbar/core-toolbar.html">
 <link rel="import" href="components/core-scaffold/core-scaffold.html">
+<link rel="import" href="components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="doc-list.html">
 <link rel="import" href="doc-menu.html">
 
@@ -25,6 +26,11 @@
             core-toolbar {
                 color: white;
             }
+            paper-icon-button {
+                position: absolute;
+                padding: 0;
+                right: 20px;
+            }
         </style>
         <core-scaffold>
             <core-header-panel navigation flex mode="seamed">
@@ -32,23 +38,32 @@
                     <span>Menu</span>
                 </core-toolbar>
 
-                <doc-menu on-menu-selected="{{menuSelected}}"></doc-menu>
+                <doc-menu editing="{{editing}}" on-menu-selected="{{menuSelected}}"></doc-menu>
 
             </core-header-panel>
-                <span tool>Anaiel - Home</span>
 
-                <div class="content">
-                    <paper-shadow>
-                        <doc-list id="listing" show="all"></doc-list>
-                    </paper-shadow>
-                </div>
+            <span tool>
+                Anaiel - Home<paper-icon-button icon="create" on-tap="{{edit}}"></paper-icon-button>
+            </span>
+
+            <div class="content">
+                <paper-shadow>
+                    <doc-list id="listing" editing="{{editing}}" show="all"></doc-list>
+                </paper-shadow>
+            </div>
         </core-scaffold>
     </template>
 
     <script>
         Polymer({
+            ready: function() {
+                this.editing = false;
+            },
             menuSelected: function(e, data, el) {
                 this.$.listing.load(data.id);
+            },
+            edit: function(e, clicks, el) {
+                this.editing = !this.editing;
             }
         });
     </script>

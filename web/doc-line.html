@@ -1,10 +1,9 @@
 <link rel="import" href="components/polymer/polymer.html">
-<link rel="import" href="components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="components/paper-input/paper-input-decorator.html">
 <link rel="import" href="components/paper-input/paper-autogrow-textarea.html">
 <link rel="import" href="components/core-icons/image-icons.html">
 
-<polymer-element name="doc-line" attributes="comments code">
+<polymer-element name="doc-line" attributes="comments code editing">
     <template>
         <style>
             :host {
@@ -32,15 +31,8 @@
                 font-family: "Courier New", monospace;
                 white-space: pre;
             }
-            paper-icon-button {
-                position: absolute;
-                font-size: .8rem;
-                padding: 0;
-                right: 0;
-            }
         </style>
 
-        <paper-icon-button icon="create" on-tap="{{edit}}"></paper-icon-button>
         <div id="container">
         <template if="{{!editing}}">
             <div id="display" horizontal layout>
@@ -72,13 +64,6 @@
         </div>
     </template>
     <script>
-        Polymer('doc-line', {
-            publish: {
-                editing: false
-            },
-            edit: function() {
-                this.editing = !this.editing;
-            }
-        });
+        Polymer({});
     </script>
 </polymer-element>

@@ -6,7 +6,7 @@
 
 <link rel="import" href="menu-service/menu-service.html">
 
-<polymer-element name="doc-menu" attributes="show">
+<polymer-element name="doc-menu" attributes="editing">
     <template>
         <style>
             :host {
@@ -32,6 +32,10 @@
 
     <script>
         Polymer({
+            editing: false,
+            editingChanged: function() {
+                console.log(arguments);
+            },
             selectItem: function(e, clicks, el) {
                 this.fire('menu-selected', e.target.templateInstance.model);
             }
