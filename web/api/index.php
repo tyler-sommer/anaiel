@@ -42,6 +42,25 @@ $app->set('routes', function (RouteCollector $r) {
         ));
     });
 
+    $r->map('/docs/{id}.json', null, function (Application $app, Request $request, $id) {
+        $conn = $app->get('doctrine.dbal.database_connection');
+
+        $data = json_decode($request->getContent());
+
+        $conn->executeQuery('UPDATE anaiel.pages SET title = :title WHERE id = :id', array('title' => $data->title, 'id' => $id));
+        $stmt = $conn->prepare('INSERT INTO anaiel.page_sections (id, page_id, text, code) VALUES(:id, :page_id, :text, :code) ON DUPLICATE KEY UPDATE text = VALUES(text), code = VALUES(code), page_id = VALUES(page_id);');
+        foreach ($data->lines as $line) {
+            $stmt->execute(array(
+                'id' => isset($line->id) ? $line->id : null,
+                'page_id' => $id,
+                'text' => $line->comment,
+                'code' => $line->code
+            ));
+        }
+
+        return new JsonResponse();
+    }, ['POST']);
+
     $r->map('/menu/items.json', null, function (Application $app, Request $request) {
         $conn = $app->get('doctrine.dbal.database_connection');
 

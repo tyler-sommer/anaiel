@@ -13,15 +13,35 @@
                    on-core-response="{{docsLoaded}}"
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="save"
+                   method="post"
+                   handleAs="json"
+                   on-core-response="{{reload}}">
+        </core-ajax>
     </template>
     <script>
         Polymer({
+            page_id: null,
             docsLoaded: function() {
                 this.display = this.$.ajax.response.title;
                 this.lines = this.$.ajax.response.lines.slice(0);
             },
             load: function(id) {
-                this.$.ajax.url = "api/index.php/docs/" + id + ".json";
+                this.page_id = id;
+                this.$.ajax.url = this.$.save.url = "api/index.php/docs/" + id + ".json";
+            },
+            reload: function() {
+                this.$.ajax.go();
+            },
+            addLine: function() {
+                this.lines.push({});
+            },
+            save: function() {
+                this.$.save.body = JSON.stringify({
+                    title: this.display,
+                    lines: this.lines
+                });
+                this.$.save.go();
             }
         });
     </script>

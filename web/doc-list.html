@@ -27,7 +27,7 @@
             </template>
             <doc-footer>
                 <template if="{{editing}}">
-                    <paper-button on-tap="{{addSection}}">Add Section</paper-button>
+                    <paper-button on-tap="{{addLine}}">Add Section</paper-button>
                 </template>
             </doc-footer>
 
@@ -37,11 +37,17 @@
 
     <script>
         Polymer({
+            editing: false,
+            editingChanged: function() {
+                if (!this.editing) {
+                    this.$.service.save();
+                }
+            },
             load: function(id) {
                 this.$.service.load(id);
             },
-            addSection: function() {
-                this.lines.push({});
+            addLine: function() {
+                this.$.service.addLine();
             }
         });
     </script>
