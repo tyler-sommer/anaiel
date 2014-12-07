@@ -5,9 +5,9 @@
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-line.html">
 <link rel="import" href="doc-footer.html">
-<link rel="import" href="doc-service/doc-service.html">
 
-<polymer-element name="doc-list" attributes="show editing">
+
+<polymer-element name="doc-list" attributes="current editing">
     <template>
         <style>
             :host {
@@ -16,13 +16,10 @@
             }
         </style>
 
-        <doc-service id="service" lines="{{lines}}" display="{{display}}">
-        </doc-service>
-
         <div layout vertical center>
-            <doc-title>{{display}}</doc-title>
-            <template repeat="{{line in lines}}">
-            <doc-line comments="{{line.comment}}" editing="{{editing}}" code="{{line.code}}">
+            <doc-title>{{current.title}}</doc-title>
+            <template repeat="{{line in current.sections}}">
+            <doc-line comments="{{line.text}}" editing="{{editing}}" code="{{line.code}}">
             </doc-line>
             </template>
             <doc-footer>
@@ -30,7 +27,6 @@
                     <paper-button on-tap="{{addLine}}">Add Section</paper-button>
                 </template>
             </doc-footer>
-
         </div>
 
     </template>
@@ -38,16 +34,11 @@
     <script>
         Polymer({
             editing: false,
-            editingChanged: function() {
-                if (!this.editing) {
-                    this.$.service.save();
-                }
-            },
             load: function(id) {
                 this.$.service.load(id);
             },
             addLine: function() {
-                this.$.service.addLine();
+                this.current.sections.push({code: '', text: ''});
             }
         });
     </script>

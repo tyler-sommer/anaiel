@@ -1,7 +1,7 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 
-<polymer-element name="doc-service" attributes="display lines">
+<polymer-element name="doc-service" attributes="books">
     <template>
         <style>
             :host {
@@ -10,37 +10,35 @@
         </style>
         <core-ajax id="ajax"
                    auto
-                   on-core-response="{{docsLoaded}}"
+                   url="../api/index.php/books.json"
+                   on-core-response="{{booksLoaded}}"
                    handleAs="json">
         </core-ajax>
         <core-ajax id="save"
+                   url="../api/index.php/books.json"
                    method="post"
-                   handleAs="json"
-                   on-core-response="{{reload}}">
+                   on-core-response="{{reload}}"
+                   handleAs="json">
         </core-ajax>
     </template>
     <script>
         Polymer({
-            page_id: null,
-            docsLoaded: function() {
-                this.display = this.$.ajax.response.title;
-                this.lines = this.$.ajax.response.lines.slice(0);
-            },
-            load: function(id) {
-                this.page_id = id;
-                this.$.ajax.url = this.$.save.url = "api/index.php/docs/" + id + ".json";
+            pageUrls: [],
+            sectionUrls: [],
+            books: {},
+            booksLoaded: function(e, o) {
+                this.books = o.response.slice(0);
             },
             reload: function() {
                 this.$.ajax.go();
+            },
+            load: function(id) {
             },
             addLine: function() {
                 this.lines.push({});
             },
             save: function() {
-                this.$.save.body = JSON.stringify({
-                    title: this.display,
-                    lines: this.lines
-                });
+                this.$.save.body = JSON.stringify(this.books);
                 this.$.save.go();
             }
         });

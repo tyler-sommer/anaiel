@@ -1,11 +1,11 @@
 <?php
 
+use Anaiel\Extension\AnaielExtension;
 use Nice\Extension\DoctrineDbalExtension;
 use Nice\Extension\SecurityExtension;
 use Nice\Extension\SessionExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Nice\Application;
 use Nice\Router\RouteCollector;
 
@@ -29,57 +29,25 @@ $app->appendExtension(new DoctrineDbalExtension([
         'password' => ''
     ]
 ]));
+$app->appendExtension(new AnaielExtension());
 $app->set('routes', function (RouteCollector $r) {
-    $r->map('/docs/{id}.json', null, function (Application $app, $id) {
-        $conn = $app->get('doctrine.dbal.database_connection');
+    $r->map('/books.json', null, function (Application $app) {
+        $repo = $app->get('anaiel.book_repository');
 
-        $title = $conn->executeQuery('SELECT p.title FROM anaiel.pages p WHERE p.id = :id', array('id' => $id))->fetchColumn(0);
-        $items = $conn->executeQuery('SELECT ps.id, ps.order, ps.text as comment, ps.code FROM anaiel.page_sections ps WHERE ps.page_id = :id', array('id' => $id))->fetchAll();
-
-        return new JsonResponse(array(
-            'title' => $title,
-            'lines' => $items
-        ));
+        return new JsonResponse($repo->findAll());
     });
 
-    $r->map('/docs/{id}.json', null, function (Application $app, Request $request, $id) {
-        $conn = $app->get('doctrine.dbal.database_connection');
+    $r->map('/books.json', null, function (Application $app, Request $request) {
+        $repo = $app->get('anaiel.book_repository');
 
-        $data = json_decode($request->getContent());
+        $books = json_decode($request->getContent(), true);
 
-        $conn->executeQuery('UPDATE anaiel.pages SET title = :title WHERE id = :id', array('title' => $data->title, 'id' => $id));
-        $stmt = $conn->prepare('INSERT INTO anaiel.page_sections (id, page_id, text, code) VALUES(:id, :page_id, :text, :code) ON DUPLICATE KEY UPDATE text = VALUES(text), code = VALUES(code), page_id = VALUES(page_id);');
-        foreach ($data->lines as $line) {
-            $stmt->execute(array(
-                'id' => isset($line->id) ? $line->id : null,
-                'page_id' => $id,
-                'text' => $line->comment,
-                'code' => $line->code
-            ));
+        foreach ($books as $book) {
+            $repo->save($book);
         }
 
         return new JsonResponse();
-    }, ['POST']);
-
-    $r->map('/menu/items.json', null, function (Application $app, Request $request) {
-        $conn = $app->get('doctrine.dbal.database_connection');
-
-        $items = $conn->executeQuery('SELECT p.id, b.id as book_id, p.order, p.title, b.title as book_title FROM anaiel.pages p JOIN anaiel.books b ON p.book_id = b.id ORDER BY p.order')->fetchAll();
-
-        $menus = array();
-        foreach ($items as $item) {
-            if (!isset($menus[$item['book_id']])) {
-                $menus[$item['book_id']] = array(
-                    'items' => array(),
-                    'title' => $item['book_title']
-                );
-            }
-
-            $menus[$item['book_id']]['items'][] = $item;
-        }
-
-        return new JsonResponse(array_values($menus));
-    });
+    }, array('POST'));
 });
 
 $app->run();

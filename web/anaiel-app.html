@@ -6,6 +6,7 @@
 <link rel="import" href="components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="doc-list.html">
 <link rel="import" href="doc-menu.html">
+<link rel="import" href="doc-service/doc-service.html">
 
 <polymer-element name="anaiel-app">
 
@@ -32,23 +33,27 @@
                 right: 20px;
             }
         </style>
+
+        <doc-service id="service" books="{{books}}">
+        </doc-service>
+
         <core-scaffold>
             <core-header-panel navigation flex mode="seamed">
                 <core-toolbar id="navheader">
                     <span>Menu</span>
                 </core-toolbar>
 
-                <doc-menu editing="{{editing}}" on-menu-selected="{{menuSelected}}"></doc-menu>
+                <doc-menu editing="{{editing}}" books="{{books}}" on-menu-selected="{{menuSelected}}"></doc-menu>
 
             </core-header-panel>
 
             <span tool>
-                Anaiel - Home<paper-icon-button icon="create" on-tap="{{edit}}"></paper-icon-button>
+                Anaiel<paper-icon-button icon="create" on-tap="{{edit}}"></paper-icon-button>
             </span>
 
             <div class="content">
                 <paper-shadow>
-                    <doc-list id="listing" editing="{{editing}}" show="all"></doc-list>
+                    <doc-list id="listing" editing="{{editing}}" current="{{current}}"></doc-list>
                 </paper-shadow>
             </div>
         </core-scaffold>
@@ -56,14 +61,18 @@
 
     <script>
         Polymer({
+            booksCopy: null,
             ready: function() {
                 this.editing = false;
             },
             menuSelected: function(e, data, el) {
-                this.$.listing.load(data.id);
+                this.current = data;
             },
             edit: function(e, clicks, el) {
                 this.editing = !this.editing;
+                if (!this.editing) {
+                    this.$.service.save();
+                }
             }
         });
     </script>

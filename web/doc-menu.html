@@ -4,38 +4,62 @@
 <link rel="import" href="components/core-menu/core-menu.html">
 <link rel="import" href="components/core-menu/core-submenu.html">
 <link rel="import" href="components/paper-button/paper-button.html">
+<link rel="import" href="components/paper-input/paper-input-decorator.html">
+<link rel="import" href="components/paper-input/paper-autogrow-textarea.html">
 
-<link rel="import" href="menu-service/menu-service.html">
-
-<polymer-element name="doc-menu" attributes="editing">
+<polymer-element name="doc-menu" attributes="editing books">
     <template>
         <style>
             :host {
                 display: block;
             }
+
+            paper-input-decorator {
+                width: 100%;
+            }
         </style>
 
-        <menu-service id="menu" menus="{{menus}}">
-        </menu-service>
-
         <core-menu selected="0">
-            <template repeat="{{menus}}">
-                <core-submenu icon="settings" label="{{title}}">
-                    <template repeat="{{items}}">
-                        <core-item label="{{title}}" on-click="{{selectItem}}"></core-item>
+            <template repeat="{{book in books}}">
+                <core-submenu icon="settings" label="{{book.title}}">
+                    <template repeat="{{page in book.pages}}">
+                        <core-item on-click="{{selectItem}}">
+                            <template if="{{!editing}}">
+                            {{page.title}}
+                            </template>
+                            <template if="{{editing}}">
+                                <paper-input-decorator floatingLabel label="Edit Title">
+                                    <paper-autogrow-textarea>
+                                        <textarea value="{{page.title}}"></textarea>
+                                    </paper-autogrow-textarea>
+                                </paper-input-decorator>
+                            </template>
+                        </core-item>
                     </template>
                 </core-submenu>
+                <template if="{{editing}}">
+                    <paper-button on-tap="{{addPage}}">Add Page</paper-button>
+                </template>
             </template>
         </core-menu>
         <template if="{{editing}}">
-            <paper-button>Add Page</paper-button>
+            <paper-button on-tap="{{addBook}}">Add Book</paper-button>
         </template>
+
     </template>
 
     <script>
         Polymer({
             selectItem: function(e, clicks, el) {
-                this.fire('menu-selected', e.target.templateInstance.model);
+                this.fire('menu-selected', e.target.templateInstance.model.page);
+            },
+            addPage: function(e, clicks, sender) {
+                e.stopPropagation();
+                e.target.templateInstance.model.book.pages.push({title: 'Untitled', sections: []});
+            },
+            addBook: function(e, clicks, sender) {
+                e.stopPropagation();
+                this.books.push({title: 'Untitled', pages: []});
             }
         });
     </script>
